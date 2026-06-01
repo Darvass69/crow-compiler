@@ -1,0 +1,60 @@
+import {print} from "env";
+
+// Check shadowing and const
+var x = 5;
+
+function y() {
+	var x = 6;
+	print x;
+}
+
+y();
+print x;
+
+const z = 8;
+z = 5; //! Error
+print z;
+
+
+// more data types and their operators
+function dataTypes(
+	a: int8, b: int16, c: int32, d: int64,
+	e: uint8, f: uint16, g: uint32, h: uint64,
+	i: float32, j: float64,
+	h: bool
+) {
+	a == a; // should be fine for everything, we don't really need to check them too much.
+	b != b;
+
+	c <= c;
+	h > h; // Error?, can't compare bools?
+	h + h; // same
+	
+	g + g;
+
+	i + i;
+
+	c++;
+	c--;
+
+	b = -b + b;
+
+	d && d; // Error?
+
+}
+
+// for, break, continue
+// init and update should be able to have multiple expressions/statements
+// C uses the comma ',' operator, but it's a bit problematic with declaring multiple variables, like this `var x: int32, y = 5`
+// should it be `var x: int32; y = 5` or `var x: int32 = 5; var y = 5`
+// the easiest way to do this might just be to do something like this:
+// parse 1 statement in loop init, and if its a block, we put the loop's body inside that block
+// `for ({var i = 0;};;) {}` -> `{var i = 0; for (;;) {}}
+// then the update. maybe the comma operator is fine here? I don't see how it would break stuff.
+// `for (;;i++, j++) {}`
+var z: int32;
+for ({var i = 0; var j = i}; i < 6; i++, j = i % 2 ? i : j) {
+	z += i;
+
+}
+

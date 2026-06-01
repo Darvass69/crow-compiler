@@ -229,10 +229,18 @@ function resolveReturnStatement(context: Context, node: AST.Node<AST.Type.Return
 }
 
 function resolvePrintStatement(context: Context, node: AST.Node<AST.Type.PrintStatement>): TypedAST.Node<AST.Type.PrintStatement> {
+  const expression = resolveExpression(context, node.expression);
+
+  if (expression.resolvedType.type === "void") {
+    throw new Error(
+      `HIR: print statement can't print void expression.\nexpression: ${printHIR(expression)}`,
+    );
+  }
+
   return TypedAST.createNode(
     AST.Type.PrintStatement,
     {
-      expression: resolveExpression(context, node.expression),
+      expression,
     },
   );
 }

@@ -1,99 +1,317 @@
 {
   "type": "Module",
+  "span": [
+    {
+      "type": "Identifier",
+      "value": "do_nothing",
+      "id": "TODO"
+    }
+  ],
   "body": [
     {
       "type": "FunctionDeclarationStatement",
+      "span": [],
       "name": {
         "type": "IdentifierExpression",
+        "span": [],
         "name": "floor_sqrt"
       },
       "params": [
         {
           "type": "VariableDeclarationStatement",
+          "span": [],
           "identifiers": {
             "type": "IdentifierExpression",
+            "span": [],
             "name": "n"
           },
           "typeDef": {
             "type": "IdentifierExpression",
+            "span": [],
             "name": "int32"
           }
         }
       ],
       "returnTypeDef": {
         "type": "IdentifierExpression",
+        "span": [],
         "name": "int32"
       },
       "body": {
         "type": "BlockStatement",
+        "span": [],
         "body": [
           {
             "type": "VariableDeclarationStatement",
+            "span": [],
             "identifiers": {
               "type": "IdentifierExpression",
+              "span": [
+                {
+                  "type": "Var",
+                  "value": "var",
+                  "id": "TODO"
+                }
+              ],
               "name": "guess"
             },
             "init": {
               "type": "NumberExpression",
+              "span": [
+                {
+                  "type": "Number",
+                  "value": "0",
+                  "id": "TODO"
+                }
+              ],
               "value": "0"
             }
           },
           {
             "type": "VariableDeclarationStatement",
+            "span": [],
             "identifiers": {
               "type": "IdentifierExpression",
+              "span": [
+                {
+                  "type": "Var",
+                  "value": "var",
+                  "id": "TODO"
+                }
+              ],
               "name": "result"
             },
             "typeDef": {
               "type": "IdentifierExpression",
+              "span": [],
               "name": "int32"
             }
           },
           {
             "type": "IfStatement",
+            "span": [],
             "test": {
               "type": "BinaryExpression",
+              "span": [
+                {
+                  "type": "Identifier",
+                  "value": "n",
+                  "id": "TODO"
+                },
+                {
+                  "type": "Greater",
+                  "value": ">",
+                  "id": "TODO"
+                },
+                {
+                  "type": "Number",
+                  "value": "0",
+                  "id": "TODO"
+                }
+              ],
               "left": {
                 "type": "IdentifierExpression",
+                "span": [
+                  {
+                    "type": "Identifier",
+                    "value": "n",
+                    "id": "TODO"
+                  }
+                ],
                 "name": "n"
               },
               "operator": "Greater",
               "right": {
                 "type": "NumberExpression",
+                "span": [
+                  {
+                    "type": "Number",
+                    "value": "0",
+                    "id": "TODO"
+                  }
+                ],
                 "value": "0"
               }
             },
             "consequent": {
               "type": "BlockStatement",
+              "span": [],
               "body": [
                 {
                   "type": "LoopStatement",
+                  "span": [],
                   "test": {
                     "type": "BinaryExpression",
+                    "span": [
+                      {
+                        "type": "Identifier",
+                        "value": "guess",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Add",
+                        "value": "+",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Number",
+                        "value": "1",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Multiply",
+                        "value": "*",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Identifier",
+                        "value": "guess",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Add",
+                        "value": "+",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Number",
+                        "value": "1",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "SmallerEqual",
+                        "value": "<=",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Identifier",
+                        "value": "n",
+                        "id": "TODO"
+                      }
+                    ],
                     "left": {
                       "type": "BinaryExpression",
+                      "span": [
+                        {
+                          "type": "Identifier",
+                          "value": "guess",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Add",
+                          "value": "+",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Number",
+                          "value": "1",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Multiply",
+                          "value": "*",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Identifier",
+                          "value": "guess",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Add",
+                          "value": "+",
+                          "id": "TODO"
+                        },
+                        {
+                          "type": "Number",
+                          "value": "1",
+                          "id": "TODO"
+                        }
+                      ],
                       "left": {
                         "type": "BinaryExpression",
+                        "span": [
+                          {
+                            "type": "Identifier",
+                            "value": "guess",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Add",
+                            "value": "+",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Number",
+                            "value": "1",
+                            "id": "TODO"
+                          }
+                        ],
                         "left": {
                           "type": "IdentifierExpression",
+                          "span": [
+                            {
+                              "type": "Identifier",
+                              "value": "guess",
+                              "id": "TODO"
+                            }
+                          ],
                           "name": "guess"
                         },
                         "operator": "Add",
                         "right": {
                           "type": "NumberExpression",
+                          "span": [
+                            {
+                              "type": "Number",
+                              "value": "1",
+                              "id": "TODO"
+                            }
+                          ],
                           "value": "1"
                         }
                       },
                       "operator": "Multiply",
                       "right": {
                         "type": "BinaryExpression",
+                        "span": [
+                          {
+                            "type": "Identifier",
+                            "value": "guess",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Add",
+                            "value": "+",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Number",
+                            "value": "1",
+                            "id": "TODO"
+                          }
+                        ],
                         "left": {
                           "type": "IdentifierExpression",
+                          "span": [
+                            {
+                              "type": "Identifier",
+                              "value": "guess",
+                              "id": "TODO"
+                            }
+                          ],
                           "name": "guess"
                         },
                         "operator": "Add",
                         "right": {
                           "type": "NumberExpression",
+                          "span": [
+                            {
+                              "type": "Number",
+                              "value": "1",
+                              "id": "TODO"
+                            }
+                          ],
                           "value": "1"
                         }
                       }
@@ -101,29 +319,129 @@
                     "operator": "SmallerEqual",
                     "right": {
                       "type": "IdentifierExpression",
+                      "span": [
+                        {
+                          "type": "Identifier",
+                          "value": "n",
+                          "id": "TODO"
+                        }
+                      ],
                       "name": "n"
                     }
                   },
                   "body": {
                     "type": "BlockStatement",
+                    "span": [],
                     "body": [
                       {
                         "type": "ExpressionStatement",
+                        "span": [
+                          {
+                            "type": "Identifier",
+                            "value": "guess",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Assignment",
+                            "value": "=",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Identifier",
+                            "value": "guess",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Add",
+                            "value": "+",
+                            "id": "TODO"
+                          },
+                          {
+                            "type": "Number",
+                            "value": "1",
+                            "id": "TODO"
+                          }
+                        ],
                         "expression": {
                           "type": "AssignmentExpression",
+                          "span": [
+                            {
+                              "type": "Identifier",
+                              "value": "guess",
+                              "id": "TODO"
+                            },
+                            {
+                              "type": "Assignment",
+                              "value": "=",
+                              "id": "TODO"
+                            },
+                            {
+                              "type": "Identifier",
+                              "value": "guess",
+                              "id": "TODO"
+                            },
+                            {
+                              "type": "Add",
+                              "value": "+",
+                              "id": "TODO"
+                            },
+                            {
+                              "type": "Number",
+                              "value": "1",
+                              "id": "TODO"
+                            }
+                          ],
                           "identifier": {
                             "type": "IdentifierExpression",
+                            "span": [
+                              {
+                                "type": "Identifier",
+                                "value": "guess",
+                                "id": "TODO"
+                              }
+                            ],
                             "name": "guess"
                           },
                           "expression": {
                             "type": "BinaryExpression",
+                            "span": [
+                              {
+                                "type": "Identifier",
+                                "value": "guess",
+                                "id": "TODO"
+                              },
+                              {
+                                "type": "Add",
+                                "value": "+",
+                                "id": "TODO"
+                              },
+                              {
+                                "type": "Number",
+                                "value": "1",
+                                "id": "TODO"
+                              }
+                            ],
                             "left": {
                               "type": "IdentifierExpression",
+                              "span": [
+                                {
+                                  "type": "Identifier",
+                                  "value": "guess",
+                                  "id": "TODO"
+                                }
+                              ],
                               "name": "guess"
                             },
                             "operator": "Add",
                             "right": {
                               "type": "NumberExpression",
+                              "span": [
+                                {
+                                  "type": "Number",
+                                  "value": "1",
+                                  "id": "TODO"
+                                }
+                              ],
                               "value": "1"
                             }
                           }
@@ -134,14 +452,62 @@
                 },
                 {
                   "type": "ExpressionStatement",
+                  "span": [
+                    {
+                      "type": "Identifier",
+                      "value": "result",
+                      "id": "TODO"
+                    },
+                    {
+                      "type": "Assignment",
+                      "value": "=",
+                      "id": "TODO"
+                    },
+                    {
+                      "type": "Identifier",
+                      "value": "guess",
+                      "id": "TODO"
+                    }
+                  ],
                   "expression": {
                     "type": "AssignmentExpression",
+                    "span": [
+                      {
+                        "type": "Identifier",
+                        "value": "result",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Assignment",
+                        "value": "=",
+                        "id": "TODO"
+                      },
+                      {
+                        "type": "Identifier",
+                        "value": "guess",
+                        "id": "TODO"
+                      }
+                    ],
                     "identifier": {
                       "type": "IdentifierExpression",
+                      "span": [
+                        {
+                          "type": "Identifier",
+                          "value": "result",
+                          "id": "TODO"
+                        }
+                      ],
                       "name": "result"
                     },
                     "expression": {
                       "type": "IdentifierExpression",
+                      "span": [
+                        {
+                          "type": "Identifier",
+                          "value": "guess",
+                          "id": "TODO"
+                        }
+                      ],
                       "name": "guess"
                     }
                   }
@@ -151,8 +517,16 @@
           },
           {
             "type": "ReturnStatement",
+            "span": [],
             "expression": {
               "type": "IdentifierExpression",
+              "span": [
+                {
+                  "type": "Identifier",
+                  "value": "result",
+                  "id": "TODO"
+                }
+              ],
               "name": "result"
             }
           }
@@ -161,30 +535,79 @@
     },
     {
       "type": "VariableDeclarationStatement",
+      "span": [],
       "identifiers": {
         "type": "IdentifierExpression",
+        "span": [
+          {
+            "type": "Var",
+            "value": "var",
+            "id": "TODO"
+          }
+        ],
         "name": "n"
       },
       "init": {
         "type": "NumberExpression",
+        "span": [
+          {
+            "type": "Number",
+            "value": "27",
+            "id": "TODO"
+          }
+        ],
         "value": "27"
       }
     },
     {
       "type": "VariableDeclarationStatement",
+      "span": [],
       "identifiers": {
         "type": "IdentifierExpression",
+        "span": [
+          {
+            "type": "Var",
+            "value": "var",
+            "id": "TODO"
+          }
+        ],
         "name": "res"
       },
       "init": {
         "type": "FunctionCallExpression",
+        "span": [
+          {
+            "type": "Identifier",
+            "value": "floor_sqrt",
+            "id": "TODO"
+          },
+          {
+            "type": "Identifier",
+            "value": "n",
+            "id": "TODO"
+          }
+        ],
         "callee": {
           "type": "IdentifierExpression",
+          "span": [
+            {
+              "type": "Identifier",
+              "value": "floor_sqrt",
+              "id": "TODO"
+            }
+          ],
           "name": "floor_sqrt"
         },
         "args": [
           {
             "type": "IdentifierExpression",
+            "span": [
+              {
+                "type": "Identifier",
+                "value": "n",
+                "id": "TODO"
+              }
+            ],
             "name": "n"
           }
         ]
@@ -192,40 +615,81 @@
     },
     {
       "type": "PrintStatement",
+      "span": [],
       "expression": {
         "type": "IdentifierExpression",
+        "span": [
+          {
+            "type": "Identifier",
+            "value": "res",
+            "id": "TODO"
+          }
+        ],
         "name": "res"
       }
     },
     {
       "type": "FunctionDeclarationStatement",
+      "span": [],
       "name": {
         "type": "IdentifierExpression",
+        "span": [],
         "name": "do_nothing"
       },
       "params": [],
       "body": {
         "type": "BlockStatement",
+        "span": [],
         "body": [
           {
             "type": "PrintStatement",
+            "span": [],
             "expression": {
               "type": "NumberExpression",
+              "span": [
+                {
+                  "type": "Number",
+                  "value": "1",
+                  "id": "TODO"
+                }
+              ],
               "value": "1"
             }
           },
           {
-            "type": "ReturnStatement"
+            "type": "ReturnStatement",
+            "span": []
           }
         ]
       }
     },
     {
       "type": "ExpressionStatement",
+      "span": [
+        {
+          "type": "Identifier",
+          "value": "do_nothing",
+          "id": "TODO"
+        }
+      ],
       "expression": {
         "type": "FunctionCallExpression",
+        "span": [
+          {
+            "type": "Identifier",
+            "value": "do_nothing",
+            "id": "TODO"
+          }
+        ],
         "callee": {
           "type": "IdentifierExpression",
+          "span": [
+            {
+              "type": "Identifier",
+              "value": "do_nothing",
+              "id": "TODO"
+            }
+          ],
           "name": "do_nothing"
         },
         "args": []

@@ -1,4 +1,5 @@
-import { Token, TokenType } from "../1_lexer/token";
+import { Token, tokenToStringJson, TokenType } from "../1_lexer/token";
+import { ParserError, ParserErrorCode } from "./parserErrors";
 
 export namespace AST {
   /* ------------------------------- Definitions ------------------------------ */
@@ -25,6 +26,8 @@ export namespace AST {
     BooleanExpression,
     NumberExpression,
     IdentifierExpression,
+
+    ErrorNode,
   }
 
   type NodeShapes = {
@@ -67,10 +70,13 @@ export namespace AST {
     [Type.IdentifierExpression]: {
       name: string;
     };
+    [Type.ErrorNode]: {
+      error: ParserError;
+    };
   };
 
   type NodeMap = {
-    [K in keyof NodeShapes]: { type: K } & NodeShapes[K];
+    [K in keyof NodeShapes]: { type: K; span: Token[] } & NodeShapes[K];
   };
 
   export type Node<T extends keyof NodeMap = keyof NodeMap> = NodeMap[T];
@@ -86,6 +92,7 @@ export namespace AST {
         | Type.LoopStatement
         | Type.FunctionDeclarationStatement
         | Type.ReturnStatement
+        | Type.ErrorNode
         | Type.PrintStatement;
     }
   >;
@@ -99,17 +106,20 @@ export namespace AST {
         | Type.FunctionCallExpression
         | Type.BooleanExpression
         | Type.NumberExpression
-        | Type.IdentifierExpression;
+        | Type.IdentifierExpression
+        | Type.ErrorNode;
     }
   >;
 
   /* --------------------------------- Helpers -------------------------------- */
   export function createNode<T extends Node["type"]>(
     type: T,
+    span: Token[],
     properties: NodeShapes[T],
   ) {
     return {
       type,
+      span,
       ...properties,
     };
   }
@@ -117,7 +127,15 @@ export namespace AST {
 
 /* ---------------------------------- Utils --------------------------------- */
 export function astToStringJson(key: any, value: any) {
-  if (key === "type") {
+  if (key === "span") {
+    if (Array.isArray(value)) {
+      return JSON.parse(
+        JSON.stringify(value, tokenToStringJson),
+      );
+    }
+  }
+
+  if (key === "type" && typeof value === "number") {
     return AST.Type[value];
   }
 

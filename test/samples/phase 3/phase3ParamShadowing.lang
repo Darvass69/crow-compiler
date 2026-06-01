@@ -1,0 +1,8 @@
+function fn1(a: int32) {
+  if (a < 100) {
+    var a = 5;
+    print a;
+  }
+  print a;
+}
+fn1(69);

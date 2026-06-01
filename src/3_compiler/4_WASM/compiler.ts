@@ -17,6 +17,11 @@ import {
 } from "./WASM-Types";
 
 export function generateBinary(LIR: module): Uint8Array {
+  //TODO we should not have to do this
+  typeidxTable.splice(0);
+  funcidxTable.splice(0);
+  localidxTable.splice(0);
+
   // \0asm
   const magicModuleHeader = [0x00, 0x61, 0x73, 0x6d];
   // WASM version
@@ -142,28 +147,31 @@ function generateCode(instr: instr[], labelPath: string[]): Uint8Array {
         return concatBuffer(Uint8Array.of(OpCodes.call), resolveFuncidx(i.funcidx));
       }
       case "br": {
-        const br = concatBuffer(Uint8Array.of(OpCodes.br), resolveLabelidx(labelPath, i.labelidx));
-        popLabel(labelPath);
+        const [depth, labelidx] = resolveLabelidx(labelPath, i.labelidx);
+        const br = concatBuffer(Uint8Array.of(OpCodes.br), labelidx);
+        for (let i = 0; i < depth; i++) {
+          labelPath.pop();
+        }
         return br;
       }
       case "if": {
-        saveLabel(labelPath, i.label);
+        const newLabelPath = [...labelPath, i.label];
 
         return concatBuffer(
           Uint8Array.of(OpCodes.if),
           Uint8Array.of(nullBlocktype),
-          generateCode(i.instr1, labelPath),
-          ...(i.instr2 === undefined ? [] : [Uint8Array.of(OpCodes.else), generateCode(i.instr2, labelPath)]),
+          generateCode(i.instr1, newLabelPath),
+          ...(i.instr2 === undefined ? [] : [Uint8Array.of(OpCodes.else), generateCode(i.instr2, newLabelPath)]),
           Uint8Array.of(OpCodes.end),
         );
       }
       case "loop": {
-        saveLabel(labelPath, i.label);
+        const newLabelPath = [...labelPath, i.label];
 
         return concatBuffer(
           Uint8Array.of(OpCodes.loop),
           Uint8Array.of(nullBlocktype),
-          generateCode(i.instr, labelPath),
+          generateCode(i.instr, newLabelPath),
           Uint8Array.of(OpCodes.end),
         );
       }
@@ -291,23 +299,18 @@ function resolveFuncidx(funcidx: funcidx) {
 }
 
 // Labels
-function saveLabel(labelPath: string[], label: string) {
-  labelPath.unshift(label);
-}
-
-function popLabel(labelPath: string[]) {
-  labelPath.shift();
-}
-
-function resolveLabelidx(labelPath: string[], labelidx: labelidx) {
+function resolveLabelidx(labelPath: string[], labelidx: labelidx): [depth: number, labelidx: Uint8Array] {
   if (typeof labelidx === "number") {
-    return encodeULEB128(labelidx);
+    return [labelidx, encodeULEB128(labelidx)];
   }
 
-  const idx = labelPath.findIndex((l) => l === labelidx);
-  return encodeULEB128(
+  const idx = labelPath.toReversed().findIndex((l) => l === labelidx);
+  return [
     idx,
-  );
+    encodeULEB128(
+      idx,
+    ),
+  ];
 }
 
 // Local

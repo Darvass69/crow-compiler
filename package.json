@@ -1,13 +1,15 @@
 {
   "scripts": {
-    "main": "npx ts-node src/main.ts",
-    "bs": "npx ts-node typescript-bs/bs1.ts",
-    "test": "jest"
+    "main": "npx ts-node --project tsconfig.app.json src/main.ts",
+    "file": "npx ts-node --project tsconfig.app.json",
+    "test": "vitest run --printConsoleTrace=true --silent=false"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "jest": "^30.0.4",
-    "ts-jest": "^29.4.0",
-    "typescript": "^5.8.3"
+    "@vitest/coverage-v8": "^4.0.14",
+    "@vitest/expect": "^4.0.9",
+    "@vitest/runner": "^4.0.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.9"
   }
 }

@@ -1,0 +1,12 @@
+function fn1(a: int32, b: int32) {
+	print a;
+	print b;
+}
+print fn1(42, 69);
+
+/*
+function fn1(): int32 {
+  return 42;
+}
+print fn1();
+*/

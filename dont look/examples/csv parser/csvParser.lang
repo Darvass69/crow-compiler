@@ -1,0 +1,166 @@
+/*
+A simple CSV parser.
+ + not just comma delimiter (you can specify)
+ + you can define the schema and format of each field and it will be checked when parsing
+ + it handles optional fields, and optional headers
+ + Newlines in quotes aren't included in the string and will start a new row. You need to escape them (\n) instead.
+
+
+Options:
+  optional header (if its not there, no value like that can be there, but if its not an optional field, if its there, all rows have that value)
+  optional field + type of field + special checks if needed
+  column order can be inferred from the header names
+
+
+load file
+parse header (find first line) + check it matches the schema + options
+
+
+parse lines + type check, get row
+get result + errors
+
+
+States:
+ - Empty
+ - Loaded: load text (and split lines?)
+ - HeaderReady: Headers are parsed and each col is mapped to a value in the row. (check order and stuff also)
+ - RowsParsed: 
+*/
+
+struct String {
+  len: usize;
+  cap: usize;
+  data: char[];
+} where (
+  Self.len <= Self.cap;
+  // we duplicate the length of the array (len and cap), we would need some sort of aliasing/getter to remove that copy
+  Self.data.len == Self.cap;
+) 
+
+struct StringView {
+  len: usize;
+  //not an array? It should be a reference to an array/a pointer to some spot in the array
+  data: char[];
+} where (
+
+)
+
+
+
+//TODO initialization is kinda weird. If we try to init a union, its kind off weird.
+//Maybe we need to have struct and type as different things?
+
+struct Parser {
+  //not sure how lifetime would work with strings. We would need to track lifetime of the reference used in the view.
+  //and what if we want to make the string vew readonly or not?
+  source: StringView;
+  // Parser owns this array and will deallocate it when its being deallocated.
+  // Is it an array or pointer to array? I think its a pointer.
+  lines: StringView[];
+  currLine: usize = 0;
+
+  comptime headerChecked: bool;
+  headerError: bool;
+} where (
+  currLine <= lines.len;
+)
+
+states for Parser {
+  Empty: Init<Parser> //default value for every field (len == 0, etc.)
+  Loaded: Parser where (
+    Self.source is set and valid;
+    Self.source.len > 0;
+    Self.lines is set and valid;
+    Self.lines.len > 0;
+  )
+
+  HeaderValid: Parser where (
+    headerChecked == true;
+    headerError == false;
+  )
+  
+  HeaderError: Parser where (
+    headerChecked == true;
+    headerError == true;
+  )
+  
+}
+
+
+//How do we mark lifetimes? The string referenced by input needs to stay alive as long as Parser exists (or as long as its needed)
+//Do we infer that we can also take readonly
+// would p be a borrow?
+function load(p: mut *Parser with (Empty | Loaded), input: StringView where (Self.len is ~Empty)) -> void effects (p.source: mut, p.lines: mut, p: Parser with Loaded) {
+  p.source = input;
+  p.lines = p.source.split("\n");
+}
+
+// TODO bind lifetimes of line and result
+function getHeaders(line: StringView) -> StringView[] {
+  var headers = make<StringView[]>{}; // dyn array?
+
+  var start = 0;
+  for (var i = 0; i < line.len; i++) {
+    if (line[i] == "," && !inQuote) {
+      headers.push(line.view(start,i-1));
+      start = i+1;
+      if (start >= line.len) {
+        break;
+      }
+    }
+  }
+
+  return headers;
+}
+
+function parseHeader<S: Schema>(p: mut *Parser with (Loaded)) -> void effects (p: /*+ schema */Self with (HeaderValid | HeaderError)) {
+  // mark typestate. could be inferred
+  p: Self & (headerChecked = true);
+
+  
+  const headers = getHeaders<>(p.lines[0]);
+
+  for (constexpr {colName: _}, index of S) {
+    if (headers[index] != colName) {
+      //error
+    }
+  }
+}
+
+
+type CellType = 
+type Schema = {[colName: string]: CellType}
+
+type Schema1 = Schema & {
+
+}
+
+function main() {
+  // StringView to const static memory
+  input = "email,id,active,age,note\n" +
+    "alice@example.com,1,true,17,\n" +
+    "bob@example.org,2,false,21,\"\"\n" +
+    "carol@example.net,3,true,34,hello\n"
+
+  // own* Parser with Empty
+  //    returning/exiting context without passing ownership will deallocate the value (because of own).
+  // const means no reassignment
+  const parser = make<Parser>{};
+
+  load(parser, input);
+  // Parser + Loaded
+
+  parseHeader<Schema1>(parser);
+  // Parser + Loaded + HeaderValid | HeaderError
+
+  parser.parseRows()
+  // Parser + Done
+
+  const results = parser.getResults()
+  // results contains errors + rows based on schema (rows are loaded into a struct?)
+
+  // Read source, split at '\n'. Parser + state(Raw)
+
+  //
+}
+

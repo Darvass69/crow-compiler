@@ -11,7 +11,7 @@ export function parseProgram(p: Parser) {
     body.push(parseStatement(p));
   }
 
-  return AST.createNode(AST.Type.Module, { body });
+  return AST.createNode(AST.Type.Module, [...(body.flatMap((stmt) => stmt.span))], { body });
 }
 
 function parseStatement(p: Parser) {
@@ -28,18 +28,18 @@ function parseExpressionStatement(p: Parser) {
   const expression = parseExpression(p, BindingPower.default_bp);
   p.expect(TokenType.EndOfStatement);
 
-  return AST.createNode(AST.Type.ExpressionStatement, { expression });
+  return AST.createNode(AST.Type.ExpressionStatement, [...expression.span], { expression });
 }
 
 export function parseVariableDeclarationStatement(p: Parser) {
   const declarator = p.eat();
 
-  const identifier = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+  const identifier = AST.createNode(AST.Type.IdentifierExpression, [declarator], { name: p.expect(TokenType.Identifier).value });
 
   let typeDef: AST.Node<AST.Type.IdentifierExpression> | undefined;
   if (p.peek().type === TokenType.Colon) {
     p.expect(TokenType.Colon);
-    typeDef = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+    typeDef = AST.createNode(AST.Type.IdentifierExpression, [], { name: p.expect(TokenType.Identifier).value });
   }
 
   let init: AST.Expression | undefined;
@@ -50,7 +50,7 @@ export function parseVariableDeclarationStatement(p: Parser) {
 
   p.expect(TokenType.EndOfStatement);
 
-  return AST.createNode(AST.Type.VariableDeclarationStatement, { identifiers: identifier, typeDef, init });
+  return AST.createNode(AST.Type.VariableDeclarationStatement, [], { identifiers: identifier, typeDef, init });
 }
 
 export function parseBlockStatement(p: Parser) {
@@ -63,7 +63,7 @@ export function parseBlockStatement(p: Parser) {
 
   p.expect(TokenType.CloseCurly);
 
-  return AST.createNode(AST.Type.BlockStatement, { body });
+  return AST.createNode(AST.Type.BlockStatement, [], { body });
 }
 
 export function parseIfStatement(p: Parser): AST.Node<AST.Type.IfStatement> {
@@ -84,7 +84,7 @@ export function parseIfStatement(p: Parser): AST.Node<AST.Type.IfStatement> {
     }
   }
 
-  return AST.createNode(AST.Type.IfStatement, { test, consequent, alternate });
+  return AST.createNode(AST.Type.IfStatement, [], { test, consequent, alternate });
 }
 
 export function parseWhileStatement(p: Parser) {
@@ -94,24 +94,24 @@ export function parseWhileStatement(p: Parser) {
   p.expect(TokenType.CloseParen);
   const body = parseBlockStatement(p);
 
-  return AST.createNode(AST.Type.LoopStatement, { test, body });
+  return AST.createNode(AST.Type.LoopStatement, [], { test, body });
 }
 
 export function parseFunctionDeclarationStatement(p: Parser) {
   p.expect(TokenType.Function);
-  const name = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+  const name = AST.createNode(AST.Type.IdentifierExpression, [], { name: p.expect(TokenType.Identifier).value });
   const params = parseFunctionParameters(p);
 
   //TODO inference for return type
   let returnTypeDef: AST.Node<AST.Type.IdentifierExpression> | undefined;
   if (p.peek().type === TokenType.Colon) {
     p.expect(TokenType.Colon);
-    returnTypeDef = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+    returnTypeDef = AST.createNode(AST.Type.IdentifierExpression, [], { name: p.expect(TokenType.Identifier).value });
   }
 
   const body = parseBlockStatement(p);
 
-  return AST.createNode(AST.Type.FunctionDeclarationStatement, { name, params, returnTypeDef, body });
+  return AST.createNode(AST.Type.FunctionDeclarationStatement, [], { name, params, returnTypeDef, body });
 }
 
 function parseFunctionParameters(p: Parser) {
@@ -134,22 +134,22 @@ function parseFunctionParameters(p: Parser) {
   return params;
 
   function parseParameter() {
-    const identifier = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+    const identifier = AST.createNode(AST.Type.IdentifierExpression, [], { name: p.expect(TokenType.Identifier).value });
     p.expect(TokenType.Colon);
-    const typeDef = AST.createNode(AST.Type.IdentifierExpression, { name: p.expect(TokenType.Identifier).value });
+    const typeDef = AST.createNode(AST.Type.IdentifierExpression, [], { name: p.expect(TokenType.Identifier).value });
 
-    params.push(AST.createNode(AST.Type.VariableDeclarationStatement, { identifiers: identifier, typeDef }));
+    params.push(AST.createNode(AST.Type.VariableDeclarationStatement, [], { identifiers: identifier, typeDef }));
   }
 }
 
 export function parseReturnStatement(p: Parser) {
   p.expect(TokenType.Return);
-  if (p.peek().type === TokenType.EndOfStatement && p.eat()) return AST.createNode(AST.Type.ReturnStatement, {});
+  if (p.peek().type === TokenType.EndOfStatement && p.eat()) return AST.createNode(AST.Type.ReturnStatement, [], {});
 
   const expression = parseExpression(p, BindingPower.default_bp);
   p.expect(TokenType.EndOfStatement);
 
-  return AST.createNode(AST.Type.ReturnStatement, { expression });
+  return AST.createNode(AST.Type.ReturnStatement, [], { expression });
 }
 
 export function parsePrintStatement(p: Parser) {
@@ -157,5 +157,5 @@ export function parsePrintStatement(p: Parser) {
   const expression = parseExpression(p, BindingPower.default_bp);
   p.expect(TokenType.EndOfStatement);
 
-  return AST.createNode(AST.Type.PrintStatement, { expression });
+  return AST.createNode(AST.Type.PrintStatement, [], { expression });
 }

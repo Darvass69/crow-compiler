@@ -1,0 +1,56 @@
+function testOps(a: int32, b: int32) {
+	var result: int32;
+	var bool_result: bool;
+
+	// All types
+	result = a == b;
+	result = a != b;
+
+	// Numeric types
+	bool_result = a < b;
+	bool_result = a > b;
+	bool_result = a <= b;
+	bool_result = a >= b;
+
+	result = a + b;
+	result = a - b;
+	result = a * b;
+	result = a / b;
+	result = a % b;
+
+	result = a & b;
+	result = a | b;
+	result = a ^ b;
+	result = ~a;
+
+	result = -a;
+	result = +a;
+
+	++a;
+	a++;
+	--a;
+	a--;
+
+	a += b;
+	a -= b;
+	a *= b;
+	a /= b;
+	a %= b;
+	a &= b;
+	a |= b;
+	a ^= b;
+
+	// Boolean
+	result = a && b;
+	result = a || b;
+	result = !a;
+
+	// Integer
+	result = a << b;
+	result = a >> b;
+	result = a >>> b;
+
+	a <<= b;
+	a >>= b;
+	a >>>= b;
+}

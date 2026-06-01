@@ -1,0 +1,181 @@
+/*
+A simple CSV parser.
+you can define the schema of each field and it will be checked when parsing
+The schema is compiled into the program so there is very little runtime cost.
+*/
+
+enum CellType {
+  Text,
+  Int,
+  Bool,
+}
+
+type MapCellTypeToRealType<C: CellType> = match (C) {
+  CellType.Text => String;
+  CellType.Int => int;
+  CellType.Bool => bool;
+}
+
+type Schema = {[colName: string]: CellType}
+
+type RowStruct<S: Schema> = struct {
+  ...keyof(S).map((k) => {return {k: MapCellTypeToRealType<S[k]>}})
+  #nbRow: int = keyof(S).length;
+}
+
+struct ParserResult<Row: RowStruct> {
+  errors: String[];
+  results: Row[];
+}
+
+struct Parser {
+  // `~Empty` is equivalent to `where (length > 0)`
+  // doesn't need to be a dyn array.
+  lines: (String & ~Empty)[];
+  currentLine = 0;
+
+  // comptime only. Is tracked with the type itself, not the value.
+  #headerChecked: bool;
+  headerError: bool;
+
+  #schema: Schema | null;
+} where (
+  currLine <= lines.length;
+)
+
+Parser states {
+  Init; // default/init values? Not sure how that should be represented.
+  Loaded: Self where (
+    lines is set and valid;
+    lines.length > 0;
+  )
+
+  HeaderValid<S: Schema>: Self where (
+    #headerChecked;
+    !headerError;
+    #schema == S;
+  )
+
+  HeaderInvalid: Self where (
+    headerError;
+  )
+}
+
+function load(
+  p: *Parser & (Init | Loaded),
+  input: String where (length > 0)
+) -> void {
+  p.lines = input.split("\n");
+} effects (
+  p.lines: mut;
+  p: Self & Loaded & ~Init;
+)
+
+function parseHeader<S: Schema>(
+  p: *Parser & Loaded,
+) -> void {
+  // lines.length > 0, so p.lines[0] is valid
+  var headers: String[] = p.lines[0].split(",");
+
+  if (headers.contains("")) {
+    // error, some headers are empty
+    p.headerError = true;
+    return;
+  }
+
+  if (headers.length < keyof(S).length) {
+    //error not enough headers
+    p.headerError = true;
+    return;
+  }
+
+  for (const {colName: _}, index of S) {
+    if (headers[index] != colName) {
+      //error header doesn't have the right name
+      p.headerError = true;
+      return;
+    }
+  }
+
+  p.currentLine = 1;
+  //Not sure about the syntax here.
+  p: Self & {#schema = S, #headerChecked = true} & HeaderValid<S>;
+} effects (
+  p: Self & (HeaderValid<S> | HeaderInvalid on headerError);
+)
+
+
+function parseRows<S: Schema>(p: *Parser & HeaderValid<S>) -> ParserResult<RowStruct<S>> {
+  // context means that it pulls down that variable from the surrounding context. I don't know if we should allow that, it might have some use case,
+  // but its also really prone to bugs.
+  function parseRow(line: String, context i: int) -> Row<S> {
+    const row = make<Row>{};
+
+    const parts = line.split(",");
+    // all of this is known at compile time, it doesn't have any runtime cost
+    for (const {colName: cellType}, index of S) {
+      // from_string returns a (T | Error on isError) so the type of value is:
+      // const value: match (cellType) {CellType.Text => String; CellType.Int => int | Error; CellType.Bool => bool | Error}
+      const value = match (cellType) {
+        CellType.Text => parts[index];
+        CellType.Int => from_string<int>(parts[index]);
+        CellType.Bool => from_string<bool>(parts[index]);
+      }
+
+      // not all values are a union with error, so I think this would be a fine syntax to say "get value if it exists on the type"
+      if (value?.isError) {
+        // value is inferred to be Error
+        errors.push(`Error at row ${i} col ${index}:` + value.message);
+      } else {
+        row[colName] = value;
+      }
+    }
+
+    return row;
+  }
+
+  type Row = RowStruct<S>
+  const rows: Row[] = make<Row[]>{}; // dyn array
+  const errors: String[] = make<String[]>{};
+
+  for (var i = p.currentLine; i < p.lines.length; p.currentLine = i, i++) {
+    rows.push(parseRow(p.lines[i]));
+  }
+
+  return make<ParserResult<Row>>{
+    errors = errors,
+    results = rows
+  };
+}
+
+type Schema1 = Schema & {
+  "email": CellType.Text,
+  "id": CellType.Int,
+  "active": CellType.Bool,
+  "age": CellType.Int,
+}
+
+type RowStruct1 = RowStruct<Schema1>;
+// == struct {email: String, id: int, active: bool, age: int}
+
+function main() {
+  input = "email,id,active,age,note\n" +
+    "alice@example.com,1,true,17,\n" +
+    "bob@example.org,2,false,21,\"\"\n" +
+    "carol@example.net,3,true,34,hello\n"
+
+  // const means no reassignment
+  const parser = make<Parser>{};
+
+  load(parser, input);
+
+  parseHeader<Schema1>(parser);
+
+  if (parser.headerError) {
+    // handle error
+  } else {
+    // Schema1 is inferred
+    const results = parseRows(parser)
+    // result is RowStruct1[]
+  }
+}

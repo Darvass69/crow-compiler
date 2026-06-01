@@ -1,7 +1,7 @@
-import fs from "node:fs";
+import * as fs from "node:fs";
 import { tokenToStringJson, TokenType } from "./1_lexer/token";
 import { tokenize } from "./1_lexer/lexer";
-import { parseAST, Parser } from "./2_parser/parser";
+import { parseAST } from "./2_parser/parser";
 import { astToStringJson } from "./2_parser/astNodes";
 import { generateMIR } from "./3_compiler/2_MIR/compiler";
 import { mirToStringJson, moduleToGraphView, prettyPrintMIR } from "./3_compiler/2_MIR/MIR-Types";
@@ -53,7 +53,7 @@ async function main() {
   fs.writeFileSync(outPath + "binary.wasm", binary);
   console.log("WASM file created");
 
-  const { instance } = await WebAssembly.instantiate(binary, {
+  const instance = await WebAssembly.instantiate(binary, {
     env: {
       print: (n: number) => console.log(n),
     },
@@ -69,6 +69,8 @@ async function main() {
 void main().catch((e) => {
   console.error("Caught error in main:", e);
 });
+
+//TODO make a function that takes in a file and compiles and run it (like main but callable).
 
 async function runWASMBinary(binary: Uint8Array) {
 }

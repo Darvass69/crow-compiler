@@ -1,0 +1,6 @@
+.obsidian/*
+
+.obsidian/*
+!.obsidian/plugins/
+.obsidian/plugins/*
+!.obsidian/plugins/tag-folder-view/

@@ -10,7 +10,6 @@ export function concatBuffer(...arrays: Uint8Array[]): Uint8Array {
 }
 
 /* --------------------------------- Values --------------------------------- */
-//TODO test this to make sure that they works properly.
 //code from pseudocode in https://en.wikipedia.org/wiki/LEB128
 export function encodeULEB128(value: number): Uint8Array {
   // unsigned LEB128

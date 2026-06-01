@@ -1,31 +1,99 @@
-# Lang
+# Best Script
+A high-level application language compiled to WebAssembly that aims to be easy to prototype in while supporting increasingly precise typing and control over program behavior.
+
+## Goals
+TODO 3-5 goals to give an idea of the language
+
+[Vision and goals](./docs/wip/00-Vision.md)
+
+## Status
+Early development.
+The compiler currently supports basic expressions, control flow, and functions and the only types are bool and int32.
+
+[Current specs](./docs/wip/03-Current%20language%20spec.md)
+
+## Example
+
+TODO simple example
+
+## Getting started
+TODO
+instal node,ts, ...
+run compiler (npm run ...)
+run wasm binary (...)
+
+<!-- maybe explain a little bit how it works? Or link? -->
+
+<!-- TODO make it into a real compiler, or at least something a bit better than just running the current main. -->
+
+<!-- ## Compiler flags -->
+
+
+
+
+<!-- how to contribute -->
+
+<!-- License?? -->
+
+<!-- star history -->
+
+
+TODO add to github description
+> A high-level programming language compiled to WebAssembly, combining a simple core syntax with an expressive type system for modeling data, state, and side effects.
+
+This is a high-level programming language that compiles to WebAssembly, designed for application development with a focus on the web. It combines a simple, familiar core syntax with a powerful type system that can express complex relationships in data, track state, and control side effects. The goal is to make it easy to prototype quickly while still allowing developers to progressively add strong guarantees and correctness through types.
+
+This language is a WebAssembly-targeted application language built around a simple core and a highly expressive type system. It aims to bridge the gap between fast prototyping and strong correctness by allowing developers to start with minimal structure and gradually introduce precise types that capture invariants, state transitions, and side effects. Rather than enforcing strict rules upfront, the language lets complexity emerge where it is needed, with the type system providing the tools to make that complexity explicit and safe.
+
+
+
+> go to overview
+
+The language compiles to WebAssembly through a multi-stage pipeline (AST → HIR → MIR → LIR → WASM) and is designed to balance simplicity and expressiveness. Its core syntax remains intentionally minimal, while more advanced features—such as state tracking, refined types, and side-effect control—are handled by the type system.
+
+The type system is a central feature of the language. It is intended to model not only the shape of data, but also its validity, state, and access constraints. For example, types can encode whether data is safe to access under a lock, or whether a value has passed validation (such as a formatted string). This allows many runtime checks to be enforced or eliminated at compile time.
+
+The language also aims to support predictable performance, explicit error handling, and eventual advanced features such as typed metaprogramming, safe concurrency, and strong tooling support.
+
+
+
+
+
+## Getting started
+
+TODO
+how to install stuff
+how to run compiler
+how to use compiled code (+ framework or something?)
+
+intermediate stages
+<command --emit-ast>
+<command --emit-hir>
+<command --emit-mir>
+<command --emit-lir>
+
+
+## Example
+
+small up to date example
+
+
+
+
+## known limitations/bugs
+
+
+
+
+## Note
+This project is very early in its development. Syntax and features will change quite quickly ...
+
+
+
+
 
 This is a language compiled to WASM.
 
-## Goals
-- Good high to mid level application language, focused on web dev at first but eventually flexible enough to do most tasks.
-- A really good (and complex) type system that allows us to express complex relationships and state of our data.
-	-	Example: We have a piece of data and a mutex to protect it. The type system would be able to enforce that when we don't have the lock, we can't access the data, and that once we have the lock, the type of the data is now inferred to be accessible.
-	- Example 2: We have a form for a credit card number. When we get the string, we can check its format and refine its type to something like `####-####-####-####`. We then don't need to check the string for empty or if its the right format, because the format is baked into the type system.
-- The base of the language should be simple, like C or Go, with a more complex type system on top. This will allow us to leverage the type system without needing to make complex types for everything. We want to avoid the problem with Rust being a bit to strict on memory making it hard to prototype stuff. It should be very easy to prototype code and to incrementally improve its typing. Good type inference for complex types should be enough to make this work, and tracking memory and different memory patterns, like arenas, should also help.
-- Control over mutations and side effects (using the type system). Pure functions are known by the type system and can be optimized.
-- Good error handling (like go or rust, error as a value) and easy syntax to handle them (not like go).
-
-## Secondary Goals
-- Good meta-programming (Should be enough to allow us to have compile time signals (like solid js, but not at runtime) and other complex code transformation). Also the meta programming should be typed checked, and we should have commands for the language server to make it easier to know how code is transformed at compile time.
-- Good data transformation, especially JSON. We want to be able to manipulate JSON very easily.
-- Good concurrency/async support. We can leverage the type system to protect against race conditions, deadlocks and other problems in threads.
-- Good testing, and leveraging language features when testing to make tests easier.
-- good ffi with both javascript (easy because of WASM) and other languages (C like API), whether it's in the browser environment or standalone.
-
-## Design
-1. lexer: transforms the source code into tokens to make it easier in the parser.
-2. parser: creates an Abstract Syntax Tree from the tokens. We use a Pratt style parser because its the easiest way to do parsing by far, and it also makes really good parsing errors.
-3. compiler: 
-	1. HIR (High-level Intermediate Representation): Like the AST, but typed. We also transform complex syntax from the AST into a simpler form (desugaring). It also contains our type checking.
-	2. MIR (Mid-level Intermediate Representation): Three-Address Code/Control Flow Graph. Its easier to create assembly from this form. This might be changed for a more standard Static Single-Assignment (SSA) form that is very good for optimisations.
-	3. LIR (Low-level Intermediate Representation): This is very similar to Web Assembly Text format (WAT), but we don't have a text representation. The goal is to simplify generation from the MIR.
-	4. WASM (Web Assembly): This is the compilation target.
 
 ## TODO
 - how do we handle errors? We want to pretty print errors + language server eventually.

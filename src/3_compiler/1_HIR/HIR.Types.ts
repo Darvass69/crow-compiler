@@ -199,6 +199,13 @@ export function printBinop(binop: Binop) {
 }
 
 export function getOperatorFromToken(token: Token, type: TypedAST.ResolvedType): [Binop, TypedAST.ResolvedType] | [undefined, undefined] {
+  switch (token.type) {
+    case TokenType.Equal:
+      return [Binop.Equal, { type: "bool" }];
+    case TokenType.NotEqual:
+      return [Binop.NotEqual, { type: "bool" }];
+  }
+
   if (type.type === "bool") {
     switch (token.type) {
       case TokenType.LogicalOr:
@@ -215,10 +222,6 @@ export function getOperatorFromToken(token: Token, type: TypedAST.ResolvedType):
       case TokenType.BitwiseAnd:
         return [Binop.BitwiseAnd, type];
 
-      case TokenType.Equal:
-        return [Binop.Equal, { type: "bool" }];
-      case TokenType.NotEqual:
-        return [Binop.NotEqual, { type: "bool" }];
       case TokenType.Smaller:
         return [Binop.Smaller, { type: "bool" }];
       case TokenType.Greater:
