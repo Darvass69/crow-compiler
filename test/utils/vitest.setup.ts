@@ -1,7 +1,7 @@
 import { TestFunction } from "vitest";
 
 import { CURRENT_PHASE } from "../test.env";
-import { Token, TokenType } from "../../src/1_lexer/token";
+import { Token, TokenType } from "../../src/front-end/1_lexer/token";
 
 //TODO more flexibility? Add a way to skip it after some phase (for things that break in later phases)?
 

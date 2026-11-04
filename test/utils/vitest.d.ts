@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 
 import type { TestFunction } from "vitest";
-import { Token, TokenType } from "../../src/1_lexer/token";
+import { Token, TokenType } from "../../src/front-end/1_lexer/token";
 
 declare global {
   // override global it/test with our extensions

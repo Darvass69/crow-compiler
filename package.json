@@ -10,8 +10,8 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "main": "npx ts-node --project tsconfig.app.json src/main.ts",
-    "file": "npx ts-node --project tsconfig.app.json",
+    "main": "npx tsx --tsconfig tsconfig.app.json src/main.ts",
+    "file": "npx tsx --tsconfig tsconfig.app.json",
     "test": "vitest run --printConsoleTrace=true --silent=false"
   },
   "devDependencies": {
@@ -19,6 +19,7 @@
     "@vitest/expect": "^4.0.9",
     "@vitest/runner": "^4.0.9",
     "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^4.0.9"
   }

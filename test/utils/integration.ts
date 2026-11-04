@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import path from "path";
-import { tokenize } from "../../src/1_lexer/lexer";
-import { TokenType } from "../../src/1_lexer/token";
-import { parseAST } from "../../src/2_parser/parser";
-import { generateHIR } from "../../src/3_compiler/1_HIR/compiler";
-import { generateMIR } from "../../src/3_compiler/2_MIR/compiler";
-import { generateLIR } from "../../src/3_compiler/3_LIR/compiler";
-import { generateBinary } from "../../src/3_compiler/4_WASM/compiler";
+import { tokenize } from "../../src/front-end/1_lexer/lexer";
+import { TokenType } from "../../src/front-end/1_lexer/token";
+import { parseAST } from "../../src/front-end/2_parser/parser";
+import { generateHIR } from "../../src/front-end/3_compiler/1_HIR/compiler";
+import { generateMIR } from "../../src/back-end/2_MIR/compiler";
+import { generateLIR } from "../../src/back-end/3_LIR/compiler";
+import { generateBinary } from "../../src/back-end/4_WASM/compiler";
 import { diagnostics } from "../../src/diagnostics/diagnostics";
 
 //TODO have an actual way to specify error codes so we can test better.

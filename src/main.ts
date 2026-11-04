@@ -1,14 +1,14 @@
 import * as fs from "node:fs";
-import { tokenToStringJson, TokenType } from "./1_lexer/token";
-import { tokenize } from "./1_lexer/lexer";
-import { parseAST } from "./2_parser/parser";
-import { astToStringJson } from "./2_parser/astNodes";
-import { generateMIR } from "./3_compiler/2_MIR/compiler";
-import { mirToStringJson, moduleToGraphView, prettyPrintMIR } from "./3_compiler/2_MIR/MIR-Types";
-import { generateLIR } from "./3_compiler/3_LIR/compiler";
-import { generateBinary } from "./3_compiler/4_WASM/compiler";
-import { hirToStringJson } from "./3_compiler/1_HIR/HIR.Types";
-import { generateHIR } from "./3_compiler/1_HIR/compiler";
+import { tokenToStringJson, TokenType } from "./front-end/1_lexer/token";
+import { tokenize } from "./front-end/1_lexer/lexer";
+import { parseAST } from "./front-end/2_parser/parser";
+import { astToStringJson } from "./front-end/2_parser/astNodes";
+import { generateMIR } from "./back-end/2_MIR/compiler";
+import { mirToStringJson, moduleToGraphView, prettyPrintMIR } from "./back-end/2_MIR/MIR-Types";
+import { generateLIR } from "./back-end/3_LIR/compiler";
+import { generateBinary } from "./back-end/4_WASM/compiler";
+import { hirToStringJson } from "./front-end/3_compiler/1_HIR/HIR.Types";
+import { generateHIR } from "./front-end/3_compiler/1_HIR/compiler";
 //TODO add eslint
 
 const args = process.argv.slice(2);

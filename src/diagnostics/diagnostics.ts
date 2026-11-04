@@ -1,5 +1,5 @@
-import { LexerError } from "../1_lexer/lexerErrors";
-import { ParserError } from "../2_parser/parserErrors";
+import { LexerError } from "../front-end/1_lexer/lexerErrors";
+import { ParserError } from "../front-end/2_parser/parserErrors";
 
 //TODO don't make it global
 
