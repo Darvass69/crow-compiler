@@ -1,0 +1,4 @@
+/* Make tags directly editable in Edit Mode */
+.cm-hashtag {
+  pointer-events: none;
+}

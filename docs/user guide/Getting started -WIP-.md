@@ -1,0 +1,1 @@
+#TODO Simple guide on how to make your first program and how to run it. + links to tooling (CLI/lsp, website, vs code extension, std lib)

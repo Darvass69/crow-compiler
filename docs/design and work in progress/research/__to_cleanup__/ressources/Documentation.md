@@ -1,0 +1,1 @@
+https://diataxis.fr/ : an interesting way to do documentation. Not sure if we'll do that.

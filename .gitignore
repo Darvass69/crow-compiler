@@ -8,9 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
-*.local
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +22,22 @@ dist-ssr
 
 coverage
 out
+
+
+# TODO we could move some of this to `.git/info/exclude` so as to not affect other people's stuff.
+.obsidian/workspace.json
+
+# .obsidian/*
+# !.obsidian/plugins/
+.obsidian/plugins/*
+!.obsidian/plugins/*/
+.obsidian/plugins/*/*
+!.obsidian/snippets/
+
+!.obsidian/community-plugins.json
+!.obsidian/core-plugins.json
+!.obsidian/templates.json
+
+!.obsidian/plugins/*/data.json
+
+# !.obsidian/plugins/tag-folder-view/

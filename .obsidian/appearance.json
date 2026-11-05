@@ -1,0 +1,8 @@
+{
+  "cssTheme": "",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "no-search-on-tag-clicked",
+    "disable-search-on-tag-clicked"
+  ]
+}

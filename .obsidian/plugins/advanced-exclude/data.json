@@ -1,0 +1,7 @@
+{
+  "excludeMode": "Full",
+  "obsidianIgnoreContent": "*\n!docs/\n!docs/**\n\n!*.md\n!Untitled*/\n!Untitled*/**\n",
+  "shouldHideEmptyFolders": false,
+  "shouldIgnoreExcludedFiles": false,
+  "shouldIncludeGitIgnorePatterns": false
+}

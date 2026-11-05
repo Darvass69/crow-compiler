@@ -1,0 +1,59 @@
+# comments that uses '#' are for developing the language idea only, the language itself uses C style comments.
+
+import fs from <io>; # depends on how the std lib is done
+
+/*
+For this challenge, we have a 2 lists of numbers.
+We need to pair up the numbers in each lists, in ascending order.
+Then calculate the difference between the 2 numbers, and sum them.
+*/
+
+# do we have something to say make this path relative to source file instead of execution context? Like get this file at comp time? Or is that not a good idea.
+const file: fs.stream = fs.readFile("./puzzle1.txt");
+const source: string = file.getContents();
+
+# I'm not sure about the memory system and notation. I want a way to mark ownership.
+function getLists(source: const string*) -> [leftList: int32[], rightList: int32[]] {
+	# split returns a slice of the original string, so we need to be careful about lifetimes
+	# the pattern on the string is not a very good syntax for it, but the idea is we can define a pattern and assert that it is true (type unsafe).
+	const lines = source.split("\n") assert string<"%d   %d">[];
+
+	# each list contains the size of the list
+	# not sure about the syntax
+	const leftList: int32[lines.length] = [];
+	# we can also infer the type and length of the array from usage.
+	const rightList = [];
+
+	for (let line of lines) {
+		# I don't know if its possible to do, but it would be quite nice if it would just know to split it as soon as it finds a space because it knows the structure of the file.
+		const [left, right] = line.split("   ").map((val) => to<int32>(val));
+
+		leftList.push(left);
+		rightList.push(right);
+	}
+
+	# how can we mark the lists as being a return? That way, we could just create them in place
+	return [leftList, rightList];
+}
+
+function calculateDistance(a: int32, b: int32) {
+	if (a > b) {
+		return a - b;
+	} else {
+		return b - a;
+	}
+}
+
+const [leftList, rightList] = getLists(source);
+
+# not sure about the syntax
+# everything is const, so to sort it in place you have to specify that.
+leftList.inPlace.sort();
+rightList.inPlace.sort();
+
+let sum: int32 = 0;
+for (let left, i of leftList) {
+	sum += calculateDistance(left, rightList[i]);
+}
+
+print(sum);

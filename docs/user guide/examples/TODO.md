@@ -1,0 +1,1 @@
+#TODO Simple examples that show how to do basic things in the language, like json parsing, string manipulation, anything that isn't super obvious and that you need to do often. Could also be in the STD lib instead.

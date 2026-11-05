@@ -1,0 +1,132 @@
+// The goal: make a CLI tic tac toe app to develop the language features.
+
+import { println, read_int } from <io>
+
+enum Cell {
+	Empty,
+	X,
+	O
+}
+
+type Board = Cell[9];
+
+enum Player {
+	X = Cell.X,
+	O = Cell.O
+}
+
+struct Game {
+	// how do we mark that Game has ownership and destroys this pointers when it gets destroyed itself?
+	board: owns *Board;
+	current: Player
+}
+
+function create_board() -> owns *Board {
+	//? not sure about the syntax
+	const board: *Board = alloc<Board>(...Cell.Empty); // init to Cell.Empty
+	return board;
+}
+
+// how do we mark that it only mutated game.current ?
+function next_player(game: ^Game) {
+	game.current = game.current == Player.X ? Player.O : Player.X;
+}
+
+// How do we mark that it only mutates 1 position? We can also assert that game.board[position] != Cell.Empty
+function mark_board(game: ^Game, position: int32<0:8>) {
+	if (game.board[position] != Cell.Empty) {
+		return false;
+	}
+
+	game.board[position] = game.current;
+	return true
+}
+
+// not sure about this syntax
+const WIN_LINES: const $ = [
+	[0,1,2],[3,4,5],[6,7,8],
+	[0,3,6],[1,4,7],[2,5,8],
+	[0,4,8],[2,4,6]
+];
+
+
+function check_winner(board: const ^Board) -> $ !extend null {
+	for (var line of WIN_LINES) {
+		const [a,b,c] = line;
+		if (board[a] != Cell.Empty
+			&& board[a] == board[b]
+			&& board[b] == board[c]
+		) {
+			return board[a];
+		}
+	}
+	return Cell.Empty;
+}
+
+function is_full(board: const ^Board) -> bool {
+	for (var i = 0; i < 9; i++) {
+		if (board[i] == Cell.Empty) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function new_game() -> *Game {
+	const board = create_board();
+	const game = alloc<Game>{board, current: Player.X};
+	return game;
+}
+
+function print_board(board: ^Board) {
+	const SYMBOLS = [" ", "X", "O"];
+
+	for (var row = 0; row < 3; row++) {
+		var line = "";
+		for (col = 0; col < 3; col++) {
+			const position = row * 3 + col;
+			line = line + "[" + SYMBOLS[board[position]] + "]";
+		}
+		println(line);
+	}
+}
+
+function run_game() {
+	var game = new_game();
+	var running = true;
+
+	while (running) {
+		print_board(game.board);
+		// It knows the index is in bound because of the type system.
+		println("Turn: " + ["X","O"][game.current - 1]);
+		var played = -1;
+		while (played < 0 && 8 < played) {
+			played = read_int();
+		}
+
+		if (!mark_board(game, played)) {
+			println("Invalid move");
+			continue;
+		}
+
+		const win = check_winner(game.board);
+		if (win != Cell.Empty) {
+			print_board(game.board);
+			println(`Winner: ${win == Cell.X ? "X" : "O"}`);
+			break;
+		}
+
+		if (is_full(game.board)) {
+			print_board(game.board);
+			println(`Draw!`);
+			break;
+		}
+
+		next_player(game);
+	}
+}
+
+
+function main() {
+	run_game();
+}

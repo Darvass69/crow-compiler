@@ -1,100 +1,87 @@
-# Best Script
-A high-level application language compiled to WebAssembly that aims to be easy to prototype in while supporting increasingly precise typing and control over program behavior.
+# Crow
 
-## Goals
-TODO 3-5 goals to give an idea of the language
+Crow is an application programming language that combines the flexibility of dynamic languages with the safety, control, and performance of static languages.
 
-[Vision and goals](./docs/wip/00-Vision.md)
+It aims to provide:
++ High level features with low level control.
++ Consistent rules and behavior.
++ Good performance with no hidden cost.
++ Good user experience and fast compilation.
++ A compiler and language that is easy to customize and extend.
 
-## Status
-Early development.
-The compiler currently supports basic expressions, control flow, and functions and the only types are bool and int32.
+Take a look at the [homepage](Homepage.md) for a map of the documentation or read the [vision document](Vision.md) for a better look at what Crow is trying to do.
+# Getting started
+<!-- 
+Getting started: install + example (hello world or other simple program) + tooling + create project. Don't go into details, just an overview easy to follow. [Getting started -WIP-](Getting%20started%20-WIP-.md) for a better guide?
+-->
+The compiler cannot be used standalone yet.
+3 options are available:
+1. Run the compiler directly using `npm run main -- ${crow file}`
+2. Run the tests using `npm run test`
+3. Use it as a library in another node project. (add the dependency in `package.json` using `"crow-compiler": "file:../crow-compiler"`  or some other path)
 
-[Current specs](./docs/wip/03-Current%20language%20spec.md)
+You can use [obsidian](https://obsidian.md/) to view the documentation. Open the folder as a vault and make sure to enable community plugins and CSS snippets.
 
-## Example
+# Current status
+<!-- 
+Talk about what is and isn't done, what is stable, what is WIP, what is production ready, restrictions.
+-->
 
-TODO simple example
+> [!warning]
+> The whole compiler is currently being re-written to be easier to develop and integrate into a language server. It might not currently be in a working state.
 
-## Getting started
-TODO
-instal node,ts, ...
-run compiler (npm run ...)
-run wasm binary (...)
+This project is very early in its development. Syntax and features will change quite quickly, and the compiler API is unstable. It currently only compiles to WASM, but other targets are planned.
 
-<!-- maybe explain a little bit how it works? Or link? -->
-
-<!-- TODO make it into a real compiler, or at least something a bit better than just running the current main. -->
-
-<!-- ## Compiler flags -->
-
-
-
-
-<!-- how to contribute -->
-
-<!-- License?? -->
-
-<!-- star history -->
-
-
-TODO add to github description
-> A high-level programming language compiled to WebAssembly, combining a simple core syntax with an expressive type system for modeling data, state, and side effects.
-
-This is a high-level programming language that compiles to WebAssembly, designed for application development with a focus on the web. It combines a simple, familiar core syntax with a powerful type system that can express complex relationships in data, track state, and control side effects. The goal is to make it easy to prototype quickly while still allowing developers to progressively add strong guarantees and correctness through types.
-
-This language is a WebAssembly-targeted application language built around a simple core and a highly expressive type system. It aims to bridge the gap between fast prototyping and strong correctness by allowing developers to start with minimal structure and gradually introduce precise types that capture invariants, state transitions, and side effects. Rather than enforcing strict rules upfront, the language lets complexity emerge where it is needed, with the type system providing the tools to make that complexity explicit and safe.
+Only the most basic features work: 
++ control flow (if, else if, else, while)
++ variables
++ functions (no forward declaration, and no recursion)
++ basic arithmetic, comparison and logical operators
++ int32 and bool types
+# Known issues
 
 
+# Roadmap
+Incomplete list of features and tasks. The order roughly reflect their priority and their dependencies. Not all features are fully designed yet.
 
-> go to overview
+- [x] Produce a basic program (WASM binary with fixed imports and exports)
+- [~] (partial) Integration tests
+- [~] (partial) Basic language features and simple type system (simple nominal type system with primitive types, structs and arrays and basic features like control flow)
 
-The language compiles to WebAssembly through a multi-stage pipeline (AST → HIR → MIR → LIR → WASM) and is designed to balance simplicity and expressiveness. Its core syntax remains intentionally minimal, while more advanced features—such as state tracking, refined types, and side-effect control—are handled by the type system.
+- [ ] Unit and fuzz testing
+- [ ] Add debugging symbols, source mapping and full introspection into the compiler.
+- [ ] Compiler as a library (with stable API and a build system/build library)
+- [ ] LSP/CLI tool
 
-The type system is a central feature of the language. It is intended to model not only the shape of data, but also its validity, state, and access constraints. For example, types can encode whether data is safe to access under a lock, or whether a value has passed validation (such as a formatted string). This allows many runtime checks to be enforced or eliminated at compile time.
+- [ ] Implement the core of the type system (refinements/typestate).
+- [ ] Generate TS types from exports + typescript integration
+- [ ] Add type inference
+- [ ] Full type system (add all features, like borrow checking and bounds checking)
 
-The language also aims to support predictable performance, explicit error handling, and eventual advanced features such as typed metaprogramming, safe concurrency, and strong tooling support.
+- [ ] Full FFI with Typescript
+- [ ] Release mode and optimization (change back end to QBE? LLVM? so we don't have to implement all the optimizations?)
+- [ ] Standard library
 
+- [ ] Bootstrap the compiler
+- [ ] Test framework
+- [ ] Web framework
+- [ ] Documentation website
+- [ ] FFI with C, C++, C#?, Java, Python, Rust?
 
+# Contributing
+Feedback, issues, bug reports and contributions are welcome.
 
+#TODO License
 
+> [!important] AI usage disclosure
+> > - No agentic AI was used.
+> > - AI was used very sparingly for code, and only to help solve specific problems.
+> > - AI was sometimes used for troubleshooting and research.
+> > - Some AI was used in the past for documentation, but it was completely edited or removed.
 
-## Getting started
-
-TODO
-how to install stuff
-how to run compiler
-how to use compiled code (+ framework or something?)
-
-intermediate stages
-<command --emit-ast>
-<command --emit-hir>
-<command --emit-mir>
-<command --emit-lir>
-
-
-## Example
-
-small up to date example
-
-
-
-
-## known limitations/bugs
-
-
-
-
-## Note
-This project is very early in its development. Syntax and features will change quite quickly ...
-
-
-
-
-
-This is a language compiled to WASM.
-
-
-## TODO
-- how do we handle errors? We want to pretty print errors + language server eventually.
-- where and when should we do our type checking? With the AST? The HIR?
+---
+Documentation inspiration:
++ [Coda](https://github.com/gingrspacecadet/coda)
++ [Lumina](https://docs.luminalang.com)
++ [Zig](https://github.com/ziglang/zig/tree/e112818e25b710199f5c757c17717499356d516e)
++ [Rust](https://github.com/brson/rust/blob/3d6f5100aff24aa97275dc92ade728caac605560/src/doc/complement-project-faq.md#1)
